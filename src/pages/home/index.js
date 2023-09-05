@@ -84,7 +84,6 @@ const Home = () => {
         <title>Dashboard</title>
       </Helmet>
       <Layout>
-        {console.log(process.env.REACT_APP_API)}
         <Balance />
         <section className="w-full md:py-8">
           <div

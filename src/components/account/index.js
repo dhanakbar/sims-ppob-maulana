@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { BiSolidPencil } from "react-icons/bi";
 import Layout from "../layout";
 import { useForm } from "react-hook-form";
 import { BsFillPersonFill } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
+import { getProfile } from "../../pages/store/actions/authActions";
 
 const Account = () => {
   const [isCantBeEdited, setIsCantBeEdited] = useState(true);
   const { register, handleSubmit } = useForm();
+  const { profile } = useSelector((state) => state.profile);
+  const dispatch = useDispatch();
 
   const onSubmitEdit = (data) => {
     console.log(data);
@@ -16,6 +20,10 @@ const Account = () => {
   const onChangeEdit = () => {
     setIsCantBeEdited(!isCantBeEdited);
   };
+
+  useEffect(() => {
+    dispatch(getProfile());
+  }, [dispatch]);
 
   return (
     <>
@@ -58,6 +66,7 @@ const Account = () => {
                   {...register("email", {
                     required: true,
                   })}
+                  defaultValue={profile?.data?.email}
                 />
               </div>
             </div>
@@ -79,6 +88,7 @@ const Account = () => {
                   {...register("first_name", {
                     required: true,
                   })}
+                  defaultValue={profile?.data?.first_name}
                 />
               </div>
             </div>
@@ -100,6 +110,7 @@ const Account = () => {
                   {...register("last_name", {
                     required: true,
                   })}
+                  defaultValue={profile?.data?.last_name}
                 />
               </div>
             </div>
