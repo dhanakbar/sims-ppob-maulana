@@ -10,8 +10,6 @@ const TopUp = () => {
   const [fastNominal, setFastNominal] = useState(0);
   const [nominalValueTopup, setNominalValueTopup] = useState();
 
-  console.log(nominalValueTopup);
-
   useEffect(() => {
     if (!watch("nominal")) {
       setValue("fast_nominal", null);
@@ -74,7 +72,7 @@ const TopUp = () => {
                 className={`w-full py-3 ${
                   nominalValue || fastNominal
                     ? "bg-primary-color"
-                    : "bg-neutral-color"
+                    : "bg-gray-color"
                 } text-white-color rounded-sm`}
                 type="submit"
               >

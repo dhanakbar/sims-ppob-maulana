@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { isActivePathName } from "../../helpers";
 
 const Navbar = () => {
   return (
@@ -12,10 +13,18 @@ const Navbar = () => {
           </div>
         </Link>
         <ul className="flex gap-8 font-semibold">
-          <li>
+          <li
+            className={`${isActivePathName("/topup") && "text-primary-color"}`}
+          >
             <Link to={"/topup"}>Top Up</Link>
           </li>
-          <li>Transaksi</li>
+          <li
+            className={`${
+              isActivePathName("/transaction") && "text-primary-color"
+            }`}
+          >
+            <Link to={"/transaction"}>Transaksi</Link>
+          </li>
           <li>Akun</li>
         </ul>
       </div>

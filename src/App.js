@@ -4,6 +4,8 @@ import Login from "./pages/login";
 import Register from "./pages/register";
 import Home from "./pages/home";
 import TopUp from "./pages/topup";
+import Prepaid from "./pages/prepaid";
+import Transaction from "./pages/transaction";
 
 function App() {
   return (
@@ -13,6 +15,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/topup" element={<TopUp />} />
+        <Route path="/prepaid" element={<Prepaid />} />
+        <Route path="/transaction" element={<Transaction />} />
       </Routes>
     </BrowserRouter>
   );
