@@ -87,7 +87,7 @@ const Home = () => {
         <Balance />
         <section className="w-full md:py-8">
           <div
-            className={`w-full grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 xl:grid-cols-12 place-items-center gap-4 md:gap-12`}
+            className={`w-full grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 xl:grid-cols-12 place-items-stretch gap-4 md:gap-12`}
           >
             {servicesMenu.map((e, index) => {
               return (

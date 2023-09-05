@@ -41,8 +41,6 @@ const Login = () => {
     dispatch(loginAction(credential));
   };
 
-  console.log(isSuccessLogin);
-
   useEffect(() => {
     isSuccessLogin && navigate("/");
     token && navigate("/");
