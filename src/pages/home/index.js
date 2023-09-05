@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import Layout from "../../components/layout";
 import { Helmet } from "react-helmet";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { Swiper, SwiperSlide } from "swiper/react";
+
+import "swiper/css";
+import Balance from "../../components/balance";
 
 const Home = () => {
-  const [isShowBalance, setIsShowBalance] = useState(false);
-
   const servicesMenu = [
     {
       label: "PPB",
@@ -70,9 +70,13 @@ const Home = () => {
     },
   ];
 
-  const onShowBalance = () => {
-    setIsShowBalance(!isShowBalance);
-  };
+  const banners = [
+    "/assets/images/banner_1.png",
+    "/assets/images/banner_2.png",
+    "/assets/images/banner_3.png",
+    "/assets/images/banner_4.png",
+    "/assets/images/banner_5.png",
+  ];
 
   return (
     <>
@@ -80,41 +84,11 @@ const Home = () => {
         <title>Dashboard</title>
       </Helmet>
       <Layout>
-        <section className="w-full flex">
-          <div className="flex flex-col justify-between w-3/4">
-            <img
-              src="/assets/icons/profil_foto.png"
-              width={64}
-              height={64}
-              alt=""
-            />
-            <div>
-              <h4>Selamat Datang,</h4>
-              <h1 className="text-3xl font-semibold">Nama Pengguna</h1>
-            </div>
-          </div>
+        <Balance username={"Nama Pengguna"} balance={"2000000"} />
+        <section className="w-full md:py-8">
           <div
-            className="p-4 rounded-lg w-full h-full bg-primary-color text-white-color flex flex-col gap-4 bg-no-repeat bg-center bg-cover"
-            style={{
-              backgroundImage: "url('/assets/images/background_saldo.png')",
-            }}
+            className={`w-full grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 xl:grid-cols-12 place-items-center gap-4 md:gap-12`}
           >
-            <p>Saldo anda</p>
-            <h1 className="text-4xl font-semibold">
-              Rp.{" "}
-              {isShowBalance ? <span>200.000.000</span> : <span>.....</span>}
-            </h1>
-            <p
-              className="flex items-center gap-2 text-sm"
-              onClick={onShowBalance}
-            >
-              Lihat saldo{" "}
-              {isShowBalance ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
-            </p>
-          </div>
-        </section>
-        <section className="w-full mt-8">
-          <div className={`w-full grid grid-cols-12 place-items-center gap-12`}>
             {servicesMenu.map((e, index) => {
               return (
                 <div
@@ -126,6 +100,39 @@ const Home = () => {
                 </div>
               );
             })}
+          </div>
+        </section>
+        <section className="w-full py-8">
+          <h4 className="font-semibold text-sm">Temukan promo menarik</h4>
+          <div className="py-4">
+            <Swiper
+              breakpoints={{
+                320: {
+                  slidesPerView: 1,
+                  spaceBetween: 8,
+                },
+                768: {
+                  slidesPerView: 2,
+                  spaceBetween: 8,
+                },
+                1200: {
+                  slidesPerView: 3,
+                  spaceBetween: 24,
+                },
+                1440: {
+                  slidesPerView: 4,
+                  spaceBetween: 32,
+                },
+              }}
+            >
+              {banners.map((e, idx) => {
+                return (
+                  <SwiperSlide key={idx}>
+                    <img className="w-full" src={e} alt="" />
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
           </div>
         </section>
       </Layout>

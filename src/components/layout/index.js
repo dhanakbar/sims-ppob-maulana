@@ -5,7 +5,7 @@ const Layout = ({ children }) => {
   return (
     <>
       <Navbar />
-      <div className="px-32 py-4">{children}</div>
+      <div className="px-8 md:px-32">{children}</div>
     </>
   );
 };
