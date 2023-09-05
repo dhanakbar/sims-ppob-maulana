@@ -3,9 +3,11 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { getBalance } from "../../pages/store/actions/balanceActions";
 import { formatRupiah } from "../../helpers";
+import { getProfile } from "../../pages/store/actions/authActions";
 
 const Balance = () => {
   const { balance } = useSelector((state) => state.balance);
+  const { profile } = useSelector((state) => state.profile);
   const [isShowBalance, setIsShowBalance] = useState(false);
   const dispatch = useDispatch();
 
@@ -15,6 +17,7 @@ const Balance = () => {
 
   useEffect(() => {
     dispatch(getBalance());
+    dispatch(getProfile());
   }, [dispatch]);
 
   return (
@@ -28,7 +31,9 @@ const Balance = () => {
         />
         <div>
           <h4>Selamat Datang,</h4>
-          <h1 className="text-3xl font-semibold">Nama Pengguna</h1>
+          <h1 className="text-3xl font-semibold">
+            {profile?.data?.first_name}
+          </h1>
         </div>
       </div>
       <div

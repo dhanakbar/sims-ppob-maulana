@@ -39,7 +39,7 @@ const TopUp = () => {
         <title>Dashboard</title>
       </Helmet>
       <Layout>
-        <Balance username={"Nama Pengguna"} balance={"2000000"} />
+        <Balance />
         <section className="w-full md:py-8">
           <div>
             <h4>Silakan masukkan</h4>

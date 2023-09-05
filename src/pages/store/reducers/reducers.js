@@ -1,8 +1,9 @@
 import { combineReducers } from "redux";
-import { loginReducer } from "./authReducers";
+import { getProfileReducer, loginReducer } from "./authReducers";
 import { getBalanceReducer } from "./balanceReducers";
 const reducer = combineReducers({
   login: loginReducer,
+  profile: getProfileReducer,
   balance: getBalanceReducer,
 });
 export default reducer;

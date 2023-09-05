@@ -11,7 +11,7 @@ const Transaction = () => {
         <title>Dashboard</title>
       </Helmet>
       <Layout>
-        <Balance username={"Nama Pengguna"} balance={"2000000"} />
+        <Balance />
         <section className="w-full py-8">
           <h4 className="font-semibold text-sm">Semua Transaksi</h4>
           <div className="py-4 flex flex-col gap-2">

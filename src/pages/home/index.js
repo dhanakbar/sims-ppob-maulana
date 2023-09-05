@@ -85,7 +85,7 @@ const Home = () => {
       </Helmet>
       <Layout>
         {console.log(process.env.REACT_APP_API)}
-        <Balance username={"Nama Pengguna"} balance={"2000000"} />
+        <Balance />
         <section className="w-full md:py-8">
           <div
             className={`w-full grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 xl:grid-cols-12 place-items-center gap-4 md:gap-12`}
