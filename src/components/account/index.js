@@ -52,7 +52,7 @@ const Account = () => {
                 </div>
                 <input
                   disabled={isCantBeEdited}
-                  className="border active:bg-none border-gray-color border-gray-200 rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full disabled:bg-light-gray-color"
+                  className="border active:bg-none border-gray-color rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full disabled:bg-light-gray-color"
                   placeholder="masukkan email anda"
                   type="email"
                   {...register("email", {
@@ -73,7 +73,7 @@ const Account = () => {
                 </div>
                 <input
                   disabled={isCantBeEdited}
-                  className="border active:bg-none border-gray-color border-gray-200 rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full disabled:bg-light-gray-color"
+                  className="border active:bg-none border-gray-color rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full disabled:bg-light-gray-color"
                   placeholder="masukkan email anda"
                   type="text"
                   {...register("first_name", {
@@ -94,7 +94,7 @@ const Account = () => {
                 </div>
                 <input
                   disabled={isCantBeEdited}
-                  className="border active:bg-none border-gray-color border-gray-200 rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full disabled:bg-light-gray-color"
+                  className="border active:bg-none border-gray-color rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full disabled:bg-light-gray-color"
                   placeholder="masukkan email anda"
                   type="text"
                   {...register("last_name", {
