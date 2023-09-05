@@ -4,11 +4,23 @@ import Layout from "../../components/layout";
 import Balance from "../../components/balance";
 import { useForm } from "react-hook-form";
 import { MdOutlineMoney } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { topupBalance } from "../../store/actions/topupActions";
+import Modal from "../../components/modal";
+import { formatRupiah } from "../../helpers";
+import { clearError } from "../../store/actions/topupActions";
+import { useNavigate } from "react-router-dom";
 
 const TopUp = () => {
   const { register, handleSubmit, watch, setValue } = useForm();
   const [fastNominal, setFastNominal] = useState(0);
   const [nominalValueTopup, setNominalValueTopup] = useState();
+  const [confirmTopup, setConfirmTopup] = useState(false);
+  const { isSuccessTopup } = useSelector((state) => state.topup);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  console.log(isSuccessTopup);
 
   useEffect(() => {
     if (!watch("nominal")) {
@@ -31,6 +43,8 @@ const TopUp = () => {
 
   const onSubmitTopup = (data) => {
     console.log(data);
+    dispatch(topupBalance({ top_up_amount: data.nominal }));
+    setConfirmTopup(false);
   };
 
   return (
@@ -49,6 +63,59 @@ const TopUp = () => {
             className="py-8 flex gap-4 w-full xl:flex-row flex-col-reverse"
             onSubmit={handleSubmit(onSubmitTopup)}
           >
+            {confirmTopup && (
+              <Modal
+                modalType={"confirm"}
+                message={
+                  <div className="text-center flex flex-col gap-2">
+                    <p>Anda yakin untuk Top Up sebesar</p>
+                    <h4 className="font-semibold text-2xl">
+                      {formatRupiah(watch("nominal"))}
+                    </h4>
+                  </div>
+                }
+                actionButton={
+                  <div className="flex flex-col gap-4">
+                    <button
+                      type="submit"
+                      className="text-primary-color font-semibold mt-4"
+                    >
+                      Ya, Lanjutkan
+                    </button>
+                    <div
+                      className="text-center"
+                      onClick={() => setConfirmTopup(false)}
+                    >
+                      Batalkan
+                    </div>
+                  </div>
+                }
+              />
+            )}
+            {isSuccessTopup && (
+              <Modal
+                message={
+                  <div className="text-center flex flex-col gap-2">
+                    <p>Top Up sebesar</p>
+                    <h4 className="font-semibold text-2xl">
+                      {formatRupiah(watch("nominal"))}
+                    </h4>
+                    <p>berhasil!</p>
+                  </div>
+                }
+                actionButton={
+                  <button
+                    className="text-primary-color font-semibold mt-4"
+                    onClick={async () => {
+                      dispatch(clearError());
+                      await navigate("/");
+                    }}
+                  >
+                    Kembali ke Beranda
+                  </button>
+                }
+              />
+            )}
             <div className="flex flex-col gap-2 w-full">
               <div className="flex w-full">
                 <div className="h-full border border-gray-color px-4 py-4 border-r-0 rounded-sm rounded-r-none">
@@ -67,17 +134,15 @@ const TopUp = () => {
                   onChange={handleNominalInputChange}
                 />
               </div>
-              <button
+              <div
                 disabled={!nominalValue || parseInt(nominalValue) < 9999}
                 className={`w-full py-3 ${
-                  nominalValue || fastNominal
-                    ? "bg-primary-color"
-                    : "bg-gray-color"
-                } text-white-color rounded-sm`}
-                type="submit"
+                  nominalValue > 9999 ? "bg-primary-color" : "bg-gray-color"
+                } text-white-color rounded-sm text-center`}
+                onClick={() => setConfirmTopup(true)}
               >
                 Top up
-              </button>
+              </div>
             </div>
             <div className="grid grid-cols-4 xl:grid-cols-3 w-full xl:w-2/4 gap-2">
               <label
