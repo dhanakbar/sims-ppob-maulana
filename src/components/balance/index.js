@@ -1,12 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
+import { getBalance } from "../../pages/store/actions/balanceActions";
+import { formatRupiah } from "../../helpers";
 
-const Balance = ({ username, balance }) => {
+const Balance = () => {
+  const { balance } = useSelector((state) => state.balance);
   const [isShowBalance, setIsShowBalance] = useState(false);
+  const dispatch = useDispatch();
 
   const onShowBalance = () => {
     setIsShowBalance(!isShowBalance);
   };
+
+  useEffect(() => {
+    dispatch(getBalance());
+  }, [dispatch]);
 
   return (
     <section className="w-full flex flex-col md:flex-row py-8 gap-4">
@@ -19,7 +28,7 @@ const Balance = ({ username, balance }) => {
         />
         <div>
           <h4>Selamat Datang,</h4>
-          <h1 className="text-3xl font-semibold">{username}</h1>
+          <h1 className="text-3xl font-semibold">Nama Pengguna</h1>
         </div>
       </div>
       <div
@@ -30,7 +39,11 @@ const Balance = ({ username, balance }) => {
       >
         <p>Saldo anda</p>
         <h1 className="text-4xl font-semibold">
-          Rp. {isShowBalance ? <span>{balance}</span> : <span>.....</span>}
+          {isShowBalance ? (
+            <span>{formatRupiah(balance?.data?.balance)}</span>
+          ) : (
+            <span>Rp * * * * *</span>
+          )}
         </h1>
         <p className="flex items-center gap-2 text-sm" onClick={onShowBalance}>
           Lihat saldo{" "}

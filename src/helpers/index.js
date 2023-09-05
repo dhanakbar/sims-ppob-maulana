@@ -13,3 +13,15 @@ export function getCookie(cookieName) {
 
   return null;
 }
+
+export const formatRupiah = (amount) => {
+  const formattedAmount = new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+  }).format(amount);
+
+  const lastThreeDigits = formattedAmount.substr(-6, 3);
+  const formattedLastThreeDigits = lastThreeDigits.replace(/\./g, "");
+
+  return formattedAmount.replace(lastThreeDigits, formattedLastThreeDigits);
+};

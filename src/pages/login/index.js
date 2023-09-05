@@ -19,7 +19,7 @@ const Login = () => {
     handleSubmit,
     // formState: { errors },
   } = useForm();
-  const { login, isSuccessLogin, isLoadingLogin, isFailLogin } = useSelector(
+  const { login, isSuccessLogin, isFailLogin } = useSelector(
     (state) => state.login
   );
 

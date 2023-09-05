@@ -1,0 +1,5 @@
+export const BALANCE_SUCCESS = "BALANCE_SUCCESS";
+export const BALANCE_LOADING = "BALANCE_LOADIGN";
+export const BALANCE_FAIL = "BALANCE_FAIL";
+
+export const CLEAR_ERRORS = "CLEAR_ERRORS";
