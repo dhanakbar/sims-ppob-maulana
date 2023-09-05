@@ -8,20 +8,19 @@ import { useForm } from "react-hook-form";
 
 const Login = () => {
   const [isCheckPassword, setIsCheckPassword] = useState(false);
-  const [closeAlert, setCloseAlert] = useState(true);
-
+  const [alertVisible, setAlertVisible] = useState(true);
   const {
     register,
     handleSubmit,
     // formState: { errors },
   } = useForm();
 
-  const onCheckPassword = () => {
-    setIsCheckPassword(!isCheckPassword);
+  const closeAlert = () => {
+    setAlertVisible(false);
   };
 
-  const onCloseAlert = () => {
-    setCloseAlert(false);
+  const onCheckPassword = () => {
+    setIsCheckPassword(!isCheckPassword);
   };
 
   const onSubmitLogin = (data) => {
@@ -36,7 +35,7 @@ const Login = () => {
       <div className="h-screen flex">
         <form
           onSubmit={handleSubmit(onSubmitLogin)}
-          className="flex flex-col gap-12 items-center justify-center h-full w-full xl:w-3/4 px-8 xl:px-32"
+          className="flex flex-col gap-12 items-center justify-center h-full w-full xl:w-3/4 px-8 xl:px-32 py-48"
         >
           <div className="flex gap-2 items-center">
             <img src="/assets/icons/logo.png" alt="" width={48} height={48} />
@@ -98,7 +97,13 @@ const Login = () => {
               <Link to={"/register"}>di sini</Link>
             </span>
           </p>
-          <Alert message={"password yang anda masukkan salah"} />
+          {alertVisible && (
+            <Alert
+              message="This is an alert message!"
+              type="blue"
+              onClose={closeAlert}
+            />
+          )}
         </form>
         <div
           className="h-full w-full bg-no-repeat bg-cover bg-center hidden xl:block"
