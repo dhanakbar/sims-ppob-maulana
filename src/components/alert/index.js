@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { MdOutlineClose } from "react-icons/md";
 const Alert = ({ custom_style, message, onClose }) => {
   const [isVisible, setIsVisible] = useState(true);
 

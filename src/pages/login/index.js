@@ -1,31 +1,52 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { MdLockOutline } from "react-icons/md";
 import { Link } from "react-router-dom";
 import Alert from "../../components/alert";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { clearError, loginAction } from "../store/actions/authActions";
+import { useNavigate } from "react-router-dom";
+import { getCookie } from "../../helpers";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const token = getCookie("nutech_token");
   const [isCheckPassword, setIsCheckPassword] = useState(false);
-  const [alertVisible, setAlertVisible] = useState(true);
   const {
     register,
     handleSubmit,
     // formState: { errors },
   } = useForm();
+  const { login, isSuccessLogin, isLoadingLogin, isFailLogin } = useSelector(
+    (state) => state.login
+  );
+
+  const dispatch = useDispatch();
 
   const closeAlert = () => {
-    setAlertVisible(false);
+    dispatch(clearError());
   };
 
   const onCheckPassword = () => {
     setIsCheckPassword(!isCheckPassword);
   };
 
-  const onSubmitLogin = (data) => {
-    console.log(data);
+  const onSubmitLogin = async (data) => {
+    const credential = {
+      email: data.email,
+      password: data.password,
+    };
+    dispatch(loginAction(credential));
   };
+
+  console.log(isSuccessLogin);
+
+  useEffect(() => {
+    isSuccessLogin && navigate("/");
+    token && navigate("/");
+  }, [isSuccessLogin, navigate, token]);
 
   return (
     <>
@@ -50,7 +71,7 @@ const Login = () => {
                 @
               </div>
               <input
-                className="border active:bg-none border-gray-color border-gray-200 rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full"
+                className="border active:bg-none border-gray-color rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full"
                 placeholder="masukkan email anda"
                 type="email"
                 {...register("email", {
@@ -63,7 +84,7 @@ const Login = () => {
                 <MdLockOutline className="text-gray-color" />
               </div>
               <input
-                className="border active:bg-none border-gray-color border-gray-200 rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full border-r-0 rounded-r-none"
+                className="border active:bg-none border-gray-color rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full border-r-0 rounded-r-none"
                 placeholder="masukkan password anda"
                 type={isCheckPassword ? "text" : "password"}
                 {...register("password", {
@@ -97,9 +118,9 @@ const Login = () => {
               <Link to={"/register"}>di sini</Link>
             </span>
           </p>
-          {alertVisible && (
+          {isFailLogin && (
             <Alert
-              message="This is an alert message!"
+              message={login?.data?.message}
               type="blue"
               onClose={closeAlert}
             />

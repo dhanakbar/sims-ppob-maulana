@@ -84,6 +84,7 @@ const Home = () => {
         <title>Dashboard</title>
       </Helmet>
       <Layout>
+        {console.log(process.env.REACT_APP_API)}
         <Balance username={"Nama Pengguna"} balance={"2000000"} />
         <section className="w-full md:py-8">
           <div

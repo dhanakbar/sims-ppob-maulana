@@ -55,7 +55,7 @@ const TopUp = () => {
                   <MdOutlineMoney className="text-gray-color" />
                 </div>
                 <input
-                  className="border active:bg-none border-gray-color border-gray-200 rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full"
+                  className="border active:bg-none border-gray-color rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full"
                   placeholder="masukkan nominal Top up"
                   type="number"
                   {...register("nominal", {
