@@ -6,6 +6,7 @@ import Home from "./pages/home";
 import TopUp from "./pages/topup";
 import Prepaid from "./pages/prepaid";
 import Transaction from "./pages/transaction";
+import Account from "./components/account";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/topup" element={<TopUp />} />
         <Route path="/prepaid" element={<Prepaid />} />
         <Route path="/transaction" element={<Transaction />} />
+        <Route path="/account" element={<Account />} />
       </Routes>
     </BrowserRouter>
   );

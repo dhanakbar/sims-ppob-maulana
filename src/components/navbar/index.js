@@ -25,7 +25,13 @@ const Navbar = () => {
           >
             <Link to={"/transaction"}>Transaksi</Link>
           </li>
-          <li>Akun</li>
+          <li
+            className={`${
+              isActivePathName("/account") && "text-primary-color"
+            }`}
+          >
+            <Link to="/account">Akun</Link>
+          </li>
         </ul>
       </div>
     </nav>
