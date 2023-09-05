@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { getBalance } from "../../pages/store/actions/balanceActions";
+import { getBalance } from "../../store/actions/balanceActions";
 import { formatRupiah } from "../../helpers";
-import { getProfile } from "../../pages/store/actions/authActions";
+import { getProfile } from "../../store/actions/authActions";
 
 const Balance = () => {
   const { balance } = useSelector((state) => state.balance);

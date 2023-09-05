@@ -1,17 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { MdLockOutline } from "react-icons/md";
 import { BsFillPersonFill } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Alert from "../../components/alert";
 import { useForm } from "react-hook-form";
+import { getCookie } from "../../helpers";
 
 const Register = () => {
   const [isCheckPassword, setIsCheckPassword] = useState(false);
   const [isCheckConfirmPassword, setIsCheckConfirmPassword] = useState(false);
   const [closeAlert, setCloseAlert] = useState(true);
 
+  const token = getCookie("nutech_token");
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -33,6 +36,10 @@ const Register = () => {
   const onSubmitLogin = (data) => {
     console.log(data);
   };
+
+  useEffect(() => {
+    token && navigate("/login");
+  }, [navigate, token]);
 
   return (
     <>

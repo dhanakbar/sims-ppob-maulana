@@ -9,7 +9,7 @@ import {
   PROFILE_SUCCESS,
   CLEAR_ERRORS,
 } from "../constans/authConstans";
-import { getCookie } from "../../../helpers";
+import { getCookie } from "../../helpers";
 
 export const loginAction =
   ({ email, password }) =>

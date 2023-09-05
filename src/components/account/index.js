@@ -5,7 +5,8 @@ import Layout from "../layout";
 import { useForm } from "react-hook-form";
 import { BsFillPersonFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-import { getProfile } from "../../pages/store/actions/authActions";
+import { getProfile } from "../../store/actions/authActions";
+import { destroyCookie } from "nookies";
 
 const Account = () => {
   const [isCantBeEdited, setIsCantBeEdited] = useState(true);
@@ -24,6 +25,11 @@ const Account = () => {
   useEffect(() => {
     dispatch(getProfile());
   }, [dispatch]);
+
+  const onLogout = async () => {
+    await destroyCookie(undefined, "nutech_token");
+    window.location.reload();
+  };
 
   return (
     <>
@@ -122,7 +128,10 @@ const Account = () => {
                 >
                   Edit Profile
                 </button>
-                <button className="bg-primary-color py-3 rounded-sm  font-semibold text-white-color">
+                <button
+                  onClick={onLogout}
+                  className="bg-primary-color py-3 rounded-sm  font-semibold text-white-color"
+                >
                   Logout
                 </button>
               </div>

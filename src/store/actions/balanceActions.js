@@ -5,7 +5,7 @@ import {
   BALANCE_SUCCESS,
   CLEAR_ERRORS,
 } from "../constans/balanceConstans";
-import { getCookie } from "../../../helpers";
+import { getCookie } from "../../helpers";
 
 export const getBalance = () => async (dispatch) => {
   try {

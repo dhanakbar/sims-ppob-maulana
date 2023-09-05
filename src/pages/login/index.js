@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import Alert from "../../components/alert";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { clearError, loginAction } from "../store/actions/authActions";
+import { clearError, loginAction } from "../../store/actions/authActions";
 import { useNavigate } from "react-router-dom";
 import { getCookie } from "../../helpers";
 

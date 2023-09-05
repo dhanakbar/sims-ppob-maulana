@@ -1,8 +1,13 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { isActivePathName } from "../../helpers";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { getCookie, isActivePathName } from "../../helpers";
 
 const Navbar = () => {
+  const token = getCookie("nutech_token");
+  const navigate = useNavigate();
+  useEffect(() => {
+    !token && navigate("/login");
+  }, [navigate, token]);
   return (
     <nav className="w-full">
       <div className="w-full flex justify-between px-8 md:px-32 border-b border-gray-color py-4">
