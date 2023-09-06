@@ -117,6 +117,7 @@ const TopUp = () => {
             )}
             {isFailTopup && (
               <Modal
+                modalType={"failed"}
                 message={
                   <div className="text-center flex flex-col gap-2">
                     <p>{topup?.data?.message}</p>

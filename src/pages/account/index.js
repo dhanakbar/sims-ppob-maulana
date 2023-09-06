@@ -14,6 +14,7 @@ import {
 import { destroyCookie } from "nookies";
 import { ToastContainer, toast } from "react-toastify";
 import Alert from "../../components/alert";
+import parse from "html-react-parser";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -34,9 +35,8 @@ const Account = () => {
   const { profileUpdate, isSuccessProfileUpdate } = useSelector(
     (state) => state.profileUpdate
   );
-  const { pictureUpdate, isSuccessPictureUpdate } = useSelector(
-    (state) => state.pictureUpdate
-  );
+  const { pictureUpdate, isSuccessPictureUpdate, isFailPictureUpdate } =
+    useSelector((state) => state.pictureUpdate);
   const dispatch = useDispatch();
 
   const onSubmitEdit = (data) => {
@@ -66,7 +66,6 @@ const Account = () => {
   };
 
   const onChangeProfilePicture = (e) => {
-    const formData = new FormData();
     const profilePicture = e.target.files[0];
 
     if (profilePicture) {
@@ -80,11 +79,10 @@ const Account = () => {
         });
       } else {
         clearErrorProfilePict("profile_picture");
-        formData.append("asd", profilePicture);
-        dispatch(updateProfilePicture({ newProfile: formData }));
+        const formData = new FormData();
+        formData.append("profilePicture", profilePicture);
+        dispatch(updateProfilePicture({ formData }));
       }
-    } else {
-      return;
     }
   };
 
@@ -93,10 +91,20 @@ const Account = () => {
   }, [dispatch, register, clearError]);
 
   useEffect(() => {
+    setValue("first_name", profile?.data?.first_name);
+    setValue("last_name", profile?.data?.last_name);
+  });
+
+  useEffect(() => {
     isSuccessProfileUpdate && toast.success("Berhasil Update Profil");
+    isSuccessPictureUpdate && toast.success("Berhasil Update Foto Profil");
     isSuccessProfileUpdate && dispatch(clearError());
     dispatch(getProfile());
-  }, [isSuccessProfileUpdate, clearError]);
+  }, [isSuccessProfileUpdate, isSuccessPictureUpdate, clearError]);
+
+  useEffect(() => {
+    isFailPictureUpdate && toast.error("Gagal update Foto Profil");
+  }, [isFailPictureUpdate]);
 
   return (
     <>
@@ -109,20 +117,28 @@ const Account = () => {
           <div>
             <img
               className="rounded-full border w-[120px] h-[120px]"
-              src={profile?.data?.profile_image}
+              src={
+                profile?.data?.profile_image
+                  ? profile?.data?.profile_image
+                  : "/assets/icons/profil_foto.png"
+              }
               width={120}
               height={120}
               alt=""
             />
             <input
               type="file"
+              name="profile_picture"
               onChange={onChangeProfilePicture}
               className="rounded-full bg-secondary-color w-8 h-8 absolute translate-x-24 -translate-y-7 z-20 opacity-0"
             />
-            <button className="rounded-full border border-gray p-1 bg-white-color text-neutral-color hover:text-white-color hover:bg-neutral-color absolute translate-x-24 -translate-y-6">
+            <div className="rounded-full border border-gray p-1 bg-white-color text-neutral-color hover:text-white-color hover:bg-neutral-color absolute translate-x-24 -translate-y-6">
               <BiSolidPencil />
-            </button>
+            </div>
           </div>
+          <h4 className="mt-2 text-3xl font-bold">
+            {profile?.data?.first_name + " " + profile?.data?.last_name}
+          </h4>
           {errorsProfilePict?.profile_picture && (
             <div className="w-3/4">
               <Alert
@@ -168,7 +184,7 @@ const Account = () => {
                   placeholder="masukkan email anda"
                   type="text"
                   {...register("first_name", {
-                    required: false,
+                    required: "Wajib diisi",
                     value: profile?.data?.first_name,
                   })}
                   defaultValue={profile?.data?.first_name}
@@ -191,7 +207,7 @@ const Account = () => {
                   placeholder="masukkan email anda"
                   type="text"
                   {...register("last_name", {
-                    required: false,
+                    required: "Wajib diisi",
                     value: profile?.data?.last_name,
                   })}
                   defaultValue={profile?.data?.last_name}

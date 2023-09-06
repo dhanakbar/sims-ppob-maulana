@@ -51,7 +51,7 @@ const Balance = () => {
           )}
         </h1>
         <p className="flex items-center gap-2 text-sm" onClick={onShowBalance}>
-          Lihat saldo{" "}
+          {isShowBalance ? "Tutup" : "Lihat"} saldo{" "}
           {isShowBalance ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
         </p>
       </div>

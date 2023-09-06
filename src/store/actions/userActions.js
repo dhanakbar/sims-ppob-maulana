@@ -77,7 +77,7 @@ export const updateProfile =
   };
 
 export const updateProfilePicture =
-  ({ newProfile }) =>
+  ({ formData }) =>
   async (dispatch) => {
     try {
       dispatch({
@@ -85,7 +85,7 @@ export const updateProfilePicture =
       });
       const { data } = await axios.put(
         `${process.env.REACT_APP_PUBLIC_API}profile/image`,
-        newProfile,
+        formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
