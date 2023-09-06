@@ -45,6 +45,9 @@ const Transaction = () => {
                 />
               </div>
             )}
+            {transaction?.data?.records?.length === 0 && (
+              <p className="text-center mt-4">Data Transaksi Belum Ada</p>
+            )}
             {transaction?.data?.records?.map((e, idx) => {
               const dateTime = toDateTime(e?.created_on);
               return (
@@ -58,14 +61,15 @@ const Transaction = () => {
                 />
               );
             })}
-            {!isLoadingTransaction && (
-              <button
-                onClick={onClickShowMore}
-                className="text-primary-color font-bold"
-              >
-                Show More
-              </button>
-            )}
+            {!isLoadingTransaction &&
+              transaction?.data?.records?.length > 0 && (
+                <button
+                  onClick={onClickShowMore}
+                  className="text-primary-color font-bold"
+                >
+                  Show More
+                </button>
+              )}
           </div>
         </section>
       </Layout>
