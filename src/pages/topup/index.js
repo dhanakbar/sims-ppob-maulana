@@ -16,7 +16,9 @@ const TopUp = () => {
   const [fastNominal, setFastNominal] = useState(0);
   const [nominalValueTopup, setNominalValueTopup] = useState();
   const [confirmTopup, setConfirmTopup] = useState(false);
-  const { isSuccessTopup } = useSelector((state) => state.topup);
+  const { isSuccessTopup, isFailTopup, topup } = useSelector(
+    (state) => state.topup
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -116,6 +118,31 @@ const TopUp = () => {
                 }
               />
             )}
+            {isFailTopup && (
+              <Modal
+                message={
+                  <div className="text-center flex flex-col gap-2">
+                    <p>{topup?.data?.message}</p>
+                    <p>Top Up sebesar</p>
+                    <h4 className="font-semibold text-2xl">
+                      {formatRupiah(watch("nominal"))}
+                    </h4>
+                    <p>Gagal</p>
+                  </div>
+                }
+                actionButton={
+                  <button
+                    className="text-primary-color font-semibold mt-4"
+                    onClick={async () => {
+                      dispatch(clearError());
+                      await navigate("/");
+                    }}
+                  >
+                    Kembali ke Beranda
+                  </button>
+                }
+              />
+            )}
             <div className="flex flex-col gap-2 w-full">
               <div className="flex w-full">
                 <div className="h-full border border-gray-color px-4 py-4 border-r-0 rounded-sm rounded-r-none">
@@ -196,7 +223,7 @@ const TopUp = () => {
                   value={50000}
                 />
                 <button className="text-center w-full relative z-0">
-                  Rp40.000
+                  Rp50.000
                 </button>
               </label>
               <label

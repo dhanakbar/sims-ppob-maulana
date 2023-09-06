@@ -5,24 +5,31 @@ import Balance from "../../components/balance";
 import { useForm } from "react-hook-form";
 import { MdOutlineMoney } from "react-icons/md";
 import axios from "axios";
-import { getCookie } from "../../helpers";
-import { useLocation } from "react-router-dom";
+import { formatRupiah, getCookie } from "../../helpers";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { payTransactionAction } from "../../store/actions/transactionActions";
+import {
+  payTransactionAction,
+  clearError,
+} from "../../store/actions/transactionActions";
+import Modal from "../../components/modal";
 
 const Prepaid = () => {
+  const navigate = useNavigate();
   const {
     state: { service_name, service_code, image, service_tariff },
   } = useLocation();
   const { register, handleSubmit, watch } = useForm();
   const [service, setService] = useState([]);
-  const { payTransaction, isSuccesPayTransaction, isFailPayTransaction } =
+  const { payTransaction, isSuccessPayTransaction, isFailPayTransaction } =
     useSelector((state) => state.payTransaction);
   const dispatch = useDispatch();
 
   const onSubmitPrepaid = (data) => {
     dispatch(payTransactionAction({ service_code }));
   };
+
+  console.log(isFailPayTransaction);
 
   const fetchServices = async () => {
     try {
@@ -52,6 +59,58 @@ const Prepaid = () => {
       </Helmet>
       <Layout>
         <Balance />
+        {isFailPayTransaction && (
+          <Modal
+            modalType={"failed"}
+            message={
+              <div className="text-center flex flex-col gap-2">
+                <p>{payTransaction?.data?.message}</p>
+                <p>Pembayaran {service_name.toLowerCase()} sebesar</p>
+                <h4 className="font-semibold text-2xl">
+                  {formatRupiah(watch("nominal"))}
+                </h4>
+                <p>Gagal</p>
+              </div>
+            }
+            actionButton={
+              <button
+                className="text-primary-color font-semibold"
+                onClick={() => {
+                  dispatch(clearError());
+                  navigate("/");
+                }}
+              >
+                Kembali Ke Beranda
+              </button>
+            }
+          />
+        )}
+        {isSuccessPayTransaction && (
+          <Modal
+            message={
+              <div className="text-center flex flex-col gap-2">
+                <p>Pembayaran {service_name.toLowerCase()} sebesar</p>
+                <h4 className="font-semibold text-2xl">
+                  {formatRupiah(watch("nominal"))}
+                </h4>
+                <p>Berhasil</p>
+              </div>
+            }
+            actionButton={
+              <button
+                className="text-primary-color font-semibold"
+                onClick={() => {
+                  dispatch({
+                    type: "CLEAR_ERRORS",
+                  });
+                  navigate("/");
+                }}
+              >
+                Kembali Ke Beranda
+              </button>
+            }
+          />
+        )}
         <section className="w-full md:py-8">
           <div>
             <h4>Pembayaran</h4>
