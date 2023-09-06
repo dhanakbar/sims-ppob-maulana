@@ -17,6 +17,8 @@ import Alert from "../../components/alert";
 import parse from "html-react-parser";
 
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { getCookie } from "../../helpers";
 
 const Account = () => {
   const [onErrorProfilePicture, setOnErrorProfilePicture] = useState(false);
@@ -66,7 +68,8 @@ const Account = () => {
     setIsCantBeEdited(!isCantBeEdited);
   };
 
-  const onChangeProfilePicture = (e) => {
+  const onChangeProfilePicture = async (e) => {
+    e.preventDefault();
     const profilePicture = e.target.files[0];
 
     if (profilePicture) {
@@ -81,7 +84,11 @@ const Account = () => {
       } else {
         clearErrorProfilePict("profile_picture");
         const formData = new FormData();
-        formData.append("profilePicture", profilePicture);
+        formData.append(
+          "picture",
+          new Blob([profilePicture]),
+          "profilePicture.jpeg"
+        );
         dispatch(updateProfilePicture({ formData }));
       }
     }

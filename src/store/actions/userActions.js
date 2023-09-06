@@ -83,6 +83,7 @@ export const updateProfilePicture =
       dispatch({
         type: UPDATE_PICTURE_LOADING,
       });
+      console.log(...formData);
       const { data } = await axios.put(
         `${process.env.REACT_APP_PUBLIC_API}profile/image`,
         formData,
