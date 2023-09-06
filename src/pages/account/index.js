@@ -84,12 +84,9 @@ const Account = () => {
       } else {
         clearErrorProfilePict("profile_picture");
         const formData = new FormData();
-        formData.append(
-          "picture",
-          new Blob([profilePicture]),
-          "profilePicture.jpeg"
-        );
-        dispatch(updateProfilePicture({ formData }));
+        formData.append("picture", profilePicture);
+        dispatch(updateProfilePicture({ file: profilePicture }));
+        // console.log({ ...formData.values() });
       }
     }
   };

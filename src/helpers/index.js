@@ -29,7 +29,6 @@ export const formatRupiah = (amount) => {
 export const toDateTime = (dateTime) => {
   const dateObject = new Date(dateTime);
 
-  // Define an array of month names
   const monthNames = [
     "January",
     "February",
@@ -50,8 +49,8 @@ export const toDateTime = (dateTime) => {
   const year = dateObject.getFullYear();
   const formattedDate = `${day} ${month} ${year}`;
 
-  const hours = dateObject.getUTCHours() + 7;
-  const minutes = dateObject.getUTCMinutes();
+  const hours = dateObject.getHours() + 7;
+  const minutes = dateObject.getMinutes();
   const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
     .toString()
     .padStart(2, "0")} WIB`;
