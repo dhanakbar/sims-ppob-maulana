@@ -16,7 +16,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/topup" element={<TopUp />} />
-        <Route path="/prepaid" element={<Prepaid />} />
+        <Route path="/prepaid/:id" element={<Prepaid />} />
         <Route path="/transaction" element={<Transaction />} />
         <Route path="/account" element={<Account />} />
       </Routes>

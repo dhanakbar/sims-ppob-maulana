@@ -1,7 +1,10 @@
 import { combineReducers } from "redux";
-import { loginReducer } from "./authReducers";
+import { loginReducer, registerReducer } from "./authReducers";
 import { getBalanceReducer } from "./balanceReducers";
-import { getTransactionHistoryReducer } from "./transactionReducers";
+import {
+  getTransactionHistoryReducer,
+  payTransactionReducer,
+} from "./transactionReducers";
 import { topupReducer } from "./topupReducers";
 import {
   getProfileReducer,
@@ -11,11 +14,13 @@ import {
 
 const reducer = combineReducers({
   login: loginReducer,
+  registerUser: registerReducer,
   profile: getProfileReducer,
   profileUpdate: updateProfileReducer,
   pictureUpdate: updateProfilePictureReducer,
   balance: getBalanceReducer,
   transaction: getTransactionHistoryReducer,
+  payTransaction: payTransactionReducer,
   topup: topupReducer,
 });
 export default reducer;

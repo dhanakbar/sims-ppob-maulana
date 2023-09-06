@@ -1,16 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import Layout from "../../components/layout";
 import Balance from "../../components/balance";
 import { useForm } from "react-hook-form";
 import { MdOutlineMoney } from "react-icons/md";
+import axios from "axios";
+import { getCookie } from "../../helpers";
+import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { payTransactionAction } from "../../store/actions/transactionActions";
 
 const Prepaid = () => {
+  const {
+    state: { service_name, service_code, image, service_tariff },
+  } = useLocation();
   const { register, handleSubmit, watch } = useForm();
+  const [service, setService] = useState([]);
+  const { payTransaction, isSuccesPayTransaction, isFailPayTransaction } =
+    useSelector((state) => state.payTransaction);
+  const dispatch = useDispatch();
 
   const onSubmitPrepaid = (data) => {
-    console.log(data);
+    dispatch(payTransactionAction({ service_code }));
   };
+
+  const fetchServices = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_PUBLIC_API}services`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getCookie("nutech_token")}`,
+          },
+        }
+      );
+      setService(response?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchServices();
+  }, []);
 
   return (
     <>
@@ -23,13 +56,8 @@ const Prepaid = () => {
           <div>
             <h4>Pembayaran</h4>
             <div className="flex items-center gap-4">
-              <img
-                src="/assets/icons/listrik.png"
-                width={32}
-                height={32}
-                alt=""
-              />
-              <h1 className="text-lg font-semibold">Listrik Prabayar</h1>
+              <img src={image} width={32} height={32} alt="" />
+              <h1 className="text-lg font-semibold">{service_name}</h1>
             </div>
           </div>
           <form
@@ -42,6 +70,7 @@ const Prepaid = () => {
                   <MdOutlineMoney className="text-gray-color" />
                 </div>
                 <input
+                  value={service_tariff}
                   className="border active:bg-none border-gray-color rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full"
                   placeholder="masukkan nominal Top up"
                   type="number"
@@ -53,13 +82,13 @@ const Prepaid = () => {
                 />
               </div>
               <button
-                disabled={!watch("nominal")}
+                disabled={!service_tariff}
                 className={`w-full py-3 ${
-                  watch("nominal") ? "bg-primary-color" : "bg-gray-color"
+                  service_tariff ? "bg-primary-color" : "bg-gray-color"
                 } text-white-color rounded-sm`}
                 type="submit"
               >
-                Top up
+                Bayar
               </button>
             </div>
           </form>

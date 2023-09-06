@@ -13,8 +13,9 @@ import {
 } from "../../store/actions/userActions";
 import { destroyCookie } from "nookies";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import Alert from "../../components/alert";
+
+import "react-toastify/dist/ReactToastify.css";
 
 const Account = () => {
   const [isCantBeEdited, setIsCantBeEdited] = useState(true);

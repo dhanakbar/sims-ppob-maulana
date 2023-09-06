@@ -61,3 +61,11 @@ export const toDateTime = (dateTime) => {
     formattedTime,
   };
 };
+
+export const convertToSlug = (text) => {
+  return text
+    .toLowerCase()
+    .replace("_", "-")
+    .replace(/\s+/g, "-")
+    .replace(/_/g, "");
+};

@@ -7,18 +7,27 @@ import { Link, useNavigate } from "react-router-dom";
 import Alert from "../../components/alert";
 import { useForm } from "react-hook-form";
 import { getCookie } from "../../helpers";
+import { useDispatch, useSelector } from "react-redux";
+import { clearError, registerAction } from "../../store/actions/authActions";
+import { ToastContainer, toast } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
   const [isCheckPassword, setIsCheckPassword] = useState(false);
   const [isCheckConfirmPassword, setIsCheckConfirmPassword] = useState(false);
-  const [closeAlert, setCloseAlert] = useState(true);
-
+  const { isSuccessRegister, isFailRegister, registerUser } = useSelector(
+    (state) => state.registerUser
+  );
+  const dispatch = useDispatch();
   const token = getCookie("nutech_token");
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    // formState: { errors },
+    watch,
+    formState: { errors },
+    reset,
   } = useForm();
 
   const onCheckPassword = () => {
@@ -29,17 +38,26 @@ const Register = () => {
     setIsCheckConfirmPassword(!isCheckConfirmPassword);
   };
 
-  const onCloseAlert = () => {
-    setCloseAlert(false);
-  };
+  const onCloseAlert = () => {};
 
   const onSubmitLogin = (data) => {
-    console.log(data);
+    delete data["confirm_password"];
+    dispatch(
+      registerAction({
+        ...data,
+      })
+    );
   };
 
   useEffect(() => {
     token && navigate("/login");
   }, [navigate, token]);
+
+  useEffect(() => {
+    isSuccessRegister && toast.success("Berhasil Daftar");
+    isSuccessRegister && reset();
+    isSuccessRegister && clearError();
+  }, [reset, navigate, isSuccessRegister]);
 
   return (
     <>
@@ -47,9 +65,10 @@ const Register = () => {
         <title>Registrasi</title>
       </Helmet>
       <div className="h-screen flex">
+        <ToastContainer />
         <form
           onSubmit={handleSubmit(onSubmitLogin)}
-          className="flex flex-col gap-12 items-center justify-center h-full w-full xl:w-3/4 px-8 xl:px-32"
+          className="flex flex-col gap-12 items-center justify-center h-full w-full xl:w-3/4 px-8 xl:px-32 py-48"
         >
           <div className="flex gap-2 items-center">
             <img src="/assets/icons/logo.png" alt="" width={48} height={48} />
@@ -124,31 +143,44 @@ const Register = () => {
                 )}
               </div>
             </div>
-            <div className="flex">
-              <div className="h-full border border-gray-color px-4 py-4 border-r-0 rounded-sm rounded-r-none">
-                <MdLockOutline className="text-gray-color" />
+            <div className="w-full">
+              <div className="flex">
+                <div className="h-full border border-gray-color px-4 py-4 border-r-0 rounded-sm rounded-r-none">
+                  <MdLockOutline className="text-gray-color" />
+                </div>
+                <input
+                  className="border active:bg-none border-gray-color rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full border-r-0 rounded-r-none"
+                  placeholder="konfirmasi password"
+                  type={isCheckConfirmPassword ? "text" : "password"}
+                  {...register("confirm_password", {
+                    required: true,
+                    validate: (val) => {
+                      if (watch("password") !== val) {
+                        return "Password tidak sama";
+                      }
+                    },
+                  })}
+                />
+                <div
+                  className="text-gray-400 border border-gray-color flex items-center justify-center px-4 border-l-0 rounded-l-none rounded-sm"
+                  onClick={onCheckConfirmPassword}
+                >
+                  {isCheckConfirmPassword ? (
+                    <AiOutlineEye size={16} className="text-gray-color" />
+                  ) : (
+                    <AiOutlineEyeInvisible
+                      size={16}
+                      className="text-gray-color"
+                    />
+                  )}
+                </div>
               </div>
-              <input
-                className="border active:bg-none border-gray-color rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full border-r-0 rounded-r-none"
-                placeholder="konfirmasi password"
-                type={isCheckConfirmPassword ? "text" : "password"}
-                {...register("confirm_password", {
-                  required: true,
-                })}
-              />
-              <div
-                className="text-gray-400 border border-gray-color flex items-center justify-center px-4 border-l-0 rounded-l-none rounded-sm"
-                onClick={onCheckConfirmPassword}
-              >
-                {isCheckConfirmPassword ? (
-                  <AiOutlineEye size={16} className="text-gray-color" />
-                ) : (
-                  <AiOutlineEyeInvisible
-                    size={16}
-                    className="text-gray-color"
-                  />
-                )}
-              </div>
+              {errors?.confirm_password && (
+                <p className="text-primary-color">
+                  {errors?.confirm_password?.message}
+                </p>
+              )}
+              {console.log(errors?.confirm_password?.message)}
             </div>
           </div>
           <button
@@ -163,7 +195,13 @@ const Register = () => {
               <Link to={"/login"}>di sini</Link>
             </span>
           </p>
-          <Alert message={"password yang anda masukkan salah"} />
+          {console.log(registerUser)}
+          {isFailRegister && (
+            <Alert
+              message={registerUser?.data?.message}
+              onClose={onCloseAlert}
+            />
+          )}
         </form>
         <div
           className="h-full w-full bg-no-repeat bg-cover bg-center hidden xl:block"
