@@ -6,6 +6,7 @@ import { formatRupiah } from "../../helpers";
 import { getProfile } from "../../store/actions/userActions";
 
 const Balance = () => {
+  const [onErrorProfilePicture, setOnErrorProfilePicture] = useState(false);
   const { balance } = useSelector((state) => state.balance);
   const { profile } = useSelector((state) => state.profile);
   const [isShowBalance, setIsShowBalance] = useState(false);
@@ -24,7 +25,17 @@ const Balance = () => {
     <section className="w-full flex flex-col md:flex-row py-8 gap-4">
       <div className="flex flex-col justify-between w-3/4">
         <img
-          src="/assets/icons/profil_foto.png"
+          className="rounded-full border"
+          src={
+            !onErrorProfilePicture
+              ? profile?.data?.profile_image
+                ? profile?.data?.profile_image
+                : "/assets/icons/profil_foto.png"
+              : "/assets/icons/profil_foto.png"
+          }
+          onError={() => {
+            setOnErrorProfilePicture(true);
+          }}
           width={64}
           height={64}
           alt=""

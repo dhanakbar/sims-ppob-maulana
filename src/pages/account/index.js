@@ -19,6 +19,7 @@ import parse from "html-react-parser";
 import "react-toastify/dist/ReactToastify.css";
 
 const Account = () => {
+  const [onErrorProfilePicture, setOnErrorProfilePicture] = useState(false);
   const [isCantBeEdited, setIsCantBeEdited] = useState(true);
   const {
     formState: { errors: errorsProfilePict },
@@ -118,10 +119,15 @@ const Account = () => {
             <img
               className="rounded-full border w-[120px] h-[120px]"
               src={
-                profile?.data?.profile_image
+                !onErrorProfilePicture
                   ? profile?.data?.profile_image
+                    ? profile?.data?.profile_image
+                    : "/assets/icons/profil_foto.png"
                   : "/assets/icons/profil_foto.png"
               }
+              onError={() => {
+                setOnErrorProfilePicture(true);
+              }}
               width={120}
               height={120}
               alt=""
