@@ -1,35 +1,93 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { BiSolidPencil } from "react-icons/bi";
-import Layout from "../layout";
+import Layout from "../../components/layout";
 import { useForm } from "react-hook-form";
 import { BsFillPersonFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-import { getProfile } from "../../store/actions/authActions";
+import {
+  getProfile,
+  updateProfile,
+  clearError,
+} from "../../store/actions/userActions";
 import { destroyCookie } from "nookies";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Alert from "../../components/alert";
 
 const Account = () => {
+  const [profilePicture, setProfilePicture] = useState("");
   const [isCantBeEdited, setIsCantBeEdited] = useState(true);
-  const { register, handleSubmit } = useForm();
+  const {
+    formState: { errors: errorsProfilePict },
+    setError: setErrorProfilePict,
+    clearErrors: clearErrorProfilePict,
+  } = useForm();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm();
   const { profile } = useSelector((state) => state.profile);
+  const { profileUpdate, isSuccessProfileUpdate } = useSelector(
+    (state) => state.profileUpdate
+  );
   const dispatch = useDispatch();
 
   const onSubmitEdit = (data) => {
+    const newProfile = {
+      first_name: data?.first_name || profile?.data?.first_name,
+      last_name: data?.last_name || profile?.data?.last_name,
+    };
     console.log(data);
+    dispatch(updateProfile(newProfile));
+    setIsCantBeEdited(!isCantBeEdited);
   };
+
+  const closeAlert = () => {};
 
   const onChangeEdit = () => {
     setIsCantBeEdited(!isCantBeEdited);
   };
 
-  useEffect(() => {
-    dispatch(getProfile());
-  }, [dispatch]);
-
   const onLogout = async () => {
     await destroyCookie(undefined, "nutech_token");
     window.location.reload();
   };
+
+  const onCancelEdit = () => {
+    setValue("first_name", profile?.data?.first_name);
+    setValue("last_name", profile?.data?.last_name);
+    setIsCantBeEdited(!isCantBeEdited);
+  };
+
+  const onChangeProfilePicture = (e) => {
+    console.log(e.target.files[0]);
+    const profilePicture = e.target.files[0];
+    if (profilePicture.type !== "image/jpeg") {
+      setErrorProfilePict("profile_picture", {
+        message: "Format file harus JPG/JPEG",
+      });
+    } else if (profilePicture.size > 100000) {
+      setErrorProfilePict("profile_picture", {
+        message: "Foto harus kurang dari 100kb",
+      });
+    } else {
+      clearErrorProfilePict("profile_picture");
+    }
+  };
+
+  useEffect(() => {
+    dispatch(getProfile());
+  }, [dispatch, register, clearError]);
+
+  useEffect(() => {
+    isSuccessProfileUpdate && toast.success("Berhasil Update Profil");
+    isSuccessProfileUpdate && dispatch(clearError());
+    dispatch(getProfile());
+  }, [isSuccessProfileUpdate, clearError]);
 
   return (
     <>
@@ -37,41 +95,50 @@ const Account = () => {
         <title>Account</title>
       </Helmet>
       <Layout>
-        <form
-          onSubmit={handleSubmit()}
-          className="w-[1200px] mx-auto flex flex-col gap-4 items-center justify-center py-8"
-        >
+        <div className="max-w-[1200px] mx-auto flex flex-col gap-4 items-center justify-center py-8">
+          <ToastContainer />
           <div>
-            <img src="/assets/icons/profil_foto.png" width={120} alt="" />
+            <img
+              className="rounded-full border w-[120px] h-[120px]"
+              src={profile?.data?.profile_image}
+              width={120}
+              height={120}
+              alt=""
+            />
             <input
-              onClick={onChangeEdit}
               type="file"
-              {...register("profule_image")}
+              onChange={onChangeProfilePicture}
               className="rounded-full bg-secondary-color w-8 h-8 absolute translate-x-24 -translate-y-7 z-20 opacity-0"
             />
             <button className="rounded-full border border-gray p-1 bg-white-color text-neutral-color hover:text-white-color hover:bg-neutral-color absolute translate-x-24 -translate-y-6">
               <BiSolidPencil />
             </button>
           </div>
-          <div className="flex gap-6 flex-col w-3/4">
+          {errorsProfilePict?.profile_picture && (
+            <div className="w-3/4">
+              <Alert
+                message={errorsProfilePict?.profile_picture?.message}
+                onClose={closeAlert}
+              />
+            </div>
+          )}
+          <form
+            form
+            onSubmit={handleSubmit(onSubmitEdit)}
+            className="flex gap-6 flex-col w-3/4"
+          >
             <div className="flex flex-col gap-2">
               <label className="font-semibold">Email</label>
               <div className="flex">
                 <div
-                  className={`text-gray-color h-full border border-gray-color px-4 py-3 border-r-0 rounded-r-none rounded-sm ${
-                    isCantBeEdited && "bg-light-gray-color"
-                  }`}
+                  className={`text-gray-color h-full border border-gray-color px-4 py-3 border-r-0 rounded-r-none rounded-sm bg-light-gray-color`}
                 >
                   @
                 </div>
                 <input
-                  disabled={isCantBeEdited}
+                  disabled={true}
                   className="border active:bg-none border-gray-color rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full disabled:bg-light-gray-color"
                   placeholder="masukkan email anda"
-                  type="email"
-                  {...register("email", {
-                    required: true,
-                  })}
                   defaultValue={profile?.data?.email}
                 />
               </div>
@@ -92,7 +159,8 @@ const Account = () => {
                   placeholder="masukkan email anda"
                   type="text"
                   {...register("first_name", {
-                    required: true,
+                    required: false,
+                    value: profile?.data?.first_name,
                   })}
                   defaultValue={profile?.data?.first_name}
                 />
@@ -114,7 +182,8 @@ const Account = () => {
                   placeholder="masukkan email anda"
                   type="text"
                   {...register("last_name", {
-                    required: true,
+                    required: false,
+                    value: profile?.data?.last_name,
                   })}
                   defaultValue={profile?.data?.last_name}
                 />
@@ -122,12 +191,12 @@ const Account = () => {
             </div>
             {isCantBeEdited ? (
               <div className="flex flex-col w-full gap-4">
-                <button
+                <div
                   onClick={onChangeEdit}
-                  className="border-2 border-primary-color py-3 rounded-sm text-primary-color font-semibold"
+                  className="border-2 text-center border-primary-color py-3 rounded-sm text-primary-color font-semibold"
                 >
                   Edit Profile
-                </button>
+                </div>
                 <button
                   onClick={onLogout}
                   className="bg-primary-color py-3 rounded-sm  font-semibold text-white-color"
@@ -137,19 +206,22 @@ const Account = () => {
               </div>
             ) : (
               <div className="flex flex-col w-full gap-4">
-                <button className="bg-primary-color py-3 rounded-sm  font-semibold text-white-color">
+                <button
+                  type="submit"
+                  className="bg-primary-color py-3 rounded-sm  font-semibold text-white-color"
+                >
                   Simpan
                 </button>
-                <button
-                  onClick={onChangeEdit}
-                  className="border-2 border-primary-color py-3 rounded-sm text-primary-color font-semibold"
+                <div
+                  onClick={onCancelEdit}
+                  className="text-center border-2 border-primary-color py-3 rounded-sm text-primary-color font-semibold"
                 >
                   Batalkan
-                </button>
+                </div>
               </div>
             )}
-          </div>
-        </form>
+          </form>
+        </div>
       </Layout>
     </>
   );

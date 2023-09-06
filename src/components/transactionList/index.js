@@ -1,5 +1,6 @@
 import React from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
+import { formatRupiah } from "../../helpers";
 
 const TransactionList = ({
   nominal,
@@ -23,7 +24,7 @@ const TransactionList = ({
               <FaMinus size={10} />
             )}
           </p>
-          <p className="font-bold text-2xl">Rp. {nominal}</p>
+          <p className="font-bold text-2xl">{formatRupiah(nominal)}</p>
         </div>
         <div className="flex gap-2 text-gray-color text-sm">
           <p>{date}</p>

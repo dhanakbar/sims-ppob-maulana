@@ -6,7 +6,7 @@ import Home from "./pages/home";
 import TopUp from "./pages/topup";
 import Prepaid from "./pages/prepaid";
 import Transaction from "./pages/transaction";
-import Account from "./components/account";
+import Account from "./pages/account";
 
 function App() {
   return (

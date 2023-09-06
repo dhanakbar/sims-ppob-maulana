@@ -51,7 +51,7 @@ const Transaction = () => {
                 <TransactionList
                   key={idx}
                   date={dateTime?.formattedDate}
-                  nominal={200000}
+                  nominal={e?.total_amount}
                   description={e?.description}
                   time={dateTime?.formattedTime}
                   transaction_type={e?.transaction_type}

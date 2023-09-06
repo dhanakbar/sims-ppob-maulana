@@ -3,7 +3,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { getBalance } from "../../store/actions/balanceActions";
 import { formatRupiah } from "../../helpers";
-import { getProfile } from "../../store/actions/authActions";
+import { getProfile } from "../../store/actions/userActions";
 
 const Balance = () => {
   const { balance } = useSelector((state) => state.balance);
