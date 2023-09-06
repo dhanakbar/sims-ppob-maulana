@@ -9,6 +9,7 @@ import {
   getProfile,
   updateProfile,
   clearError,
+  updateProfilePicture,
 } from "../../store/actions/userActions";
 import { destroyCookie } from "nookies";
 import { ToastContainer, toast } from "react-toastify";
@@ -16,7 +17,6 @@ import "react-toastify/dist/ReactToastify.css";
 import Alert from "../../components/alert";
 
 const Account = () => {
-  const [profilePicture, setProfilePicture] = useState("");
   const [isCantBeEdited, setIsCantBeEdited] = useState(true);
   const {
     formState: { errors: errorsProfilePict },
@@ -27,12 +27,14 @@ const Account = () => {
     register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors },
   } = useForm();
   const { profile } = useSelector((state) => state.profile);
   const { profileUpdate, isSuccessProfileUpdate } = useSelector(
     (state) => state.profileUpdate
+  );
+  const { pictureUpdate, isSuccessPictureUpdate } = useSelector(
+    (state) => state.pictureUpdate
   );
   const dispatch = useDispatch();
 
@@ -64,19 +66,30 @@ const Account = () => {
   };
 
   const onChangeProfilePicture = (e) => {
-    console.log(e.target.files[0]);
+    const formData = new FormData();
     const profilePicture = e.target.files[0];
-    if (profilePicture.type !== "image/jpeg") {
-      setErrorProfilePict("profile_picture", {
-        message: "Format file harus JPG/JPEG",
-      });
-    } else if (profilePicture.size > 100000) {
-      setErrorProfilePict("profile_picture", {
-        message: "Foto harus kurang dari 100kb",
-      });
+
+    if (profilePicture) {
+      if (!["image/jpeg", "image/png"].includes(profilePicture?.type)) {
+        console.log(profilePicture?.type);
+        setErrorProfilePict("profile_picture", {
+          message: "Format file harus JPEG/PNG",
+        });
+      } else if (profilePicture?.size > 100000) {
+        setErrorProfilePict("profile_picture", {
+          message: "Foto harus kurang dari 100kb",
+        });
+      } else {
+        console.log(profilePicture?.type);
+        clearErrorProfilePict("profile_picture");
+        formData.append("asd", profilePicture);
+        dispatch(updateProfilePicture({ newProfile: formData }));
+      }
     } else {
-      clearErrorProfilePict("profile_picture");
+      return;
     }
+
+    console.log(formData);
   };
 
   useEffect(() => {

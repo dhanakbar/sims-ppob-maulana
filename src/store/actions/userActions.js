@@ -7,6 +7,9 @@ import {
   UPDATE_PROFILE_FAIL,
   UPDATE_PROFILE_LOADING,
   UPDATE_PROFILE_SUCCESS,
+  UPDATE_PICTURE_FAIL,
+  UPDATE_PICTURE_LOADING,
+  UPDATE_PICTURE_SUCCESS,
 } from "../constans/userConstans";
 import { getCookie } from "../../helpers";
 
@@ -68,6 +71,38 @@ export const updateProfile =
     } catch (error) {
       dispatch({
         type: UPDATE_PROFILE_FAIL,
+        payload: error.response,
+      });
+    }
+  };
+
+export const updateProfilePicture =
+  ({ newProfile }) =>
+  async (dispatch) => {
+    try {
+      dispatch({
+        type: UPDATE_PICTURE_LOADING,
+      });
+      const { data } = await axios.put(
+        `${process.env.REACT_APP_PUBLIC_API}profile/image`,
+        newProfile,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${getCookie("nutech_token")}`,
+          },
+        }
+      );
+
+      dispatch({
+        type: UPDATE_PICTURE_SUCCESS,
+        payload: data,
+      });
+
+      return data;
+    } catch (error) {
+      dispatch({
+        type: UPDATE_PICTURE_FAIL,
         payload: error.response,
       });
     }

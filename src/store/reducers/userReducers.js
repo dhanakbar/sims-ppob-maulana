@@ -6,6 +6,9 @@ import {
   UPDATE_PROFILE_FAIL,
   UPDATE_PROFILE_LOADING,
   UPDATE_PROFILE_SUCCESS,
+  UPDATE_PICTURE_FAIL,
+  UPDATE_PICTURE_LOADING,
+  UPDATE_PICTURE_SUCCESS,
 } from "../constans/userConstans";
 
 export const getProfileReducer = (
@@ -88,6 +91,49 @@ export const updateProfileReducer = (
         isSuccessProfileUpdate: false,
         isLoadingProfileUpdate: false,
         isFailProfileUpdate: false,
+      };
+    default:
+      return state;
+  }
+};
+
+export const updateProfilePictureReducer = (
+  state = {
+    pictureUpdate: {},
+    isSuccessPictureUpdate: false,
+    isLoadingPictureUpdate: false,
+    isFailPictureUpdate: false,
+  },
+  action
+) => {
+  switch (action.type) {
+    case UPDATE_PICTURE_SUCCESS:
+      return {
+        pictureUpdate: action.payload,
+        isSuccessPictureUpdate: true,
+        isLoadingPictureUpdate: false,
+        isFailPictureUpdate: false,
+      };
+    case UPDATE_PICTURE_LOADING:
+      return {
+        isSuccessPictureUpdate: false,
+        isLoadingPictureUpdate: true,
+        isFailPictureUpdate: false,
+      };
+    case UPDATE_PICTURE_FAIL:
+      return {
+        pictureUpdate: action.payload,
+        isSuccessPictureUpdate: false,
+        isLoadingPictureUpdate: false,
+        isFailPictureUpdate: true,
+      };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        pictureUpdate: null,
+        isSuccessPictureUpdate: false,
+        isLoadingPictureUpdate: false,
+        isFailPictureUpdate: false,
       };
     default:
       return state;
