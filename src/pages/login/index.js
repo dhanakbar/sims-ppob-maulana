@@ -17,7 +17,7 @@ const Login = () => {
   const {
     register,
     handleSubmit,
-    // formState: { errors },
+    formState: { errors },
   } = useForm();
   const { login, isSuccessLogin, isFailLogin } = useSelector(
     (state) => state.login
@@ -64,44 +64,58 @@ const Login = () => {
             Masuk atau buat akun <br /> untuk memulai
           </h1>
           <div className="w-full flex flex-col gap-8">
-            <div className="flex">
-              <div className="text-gray-color h-full border border-gray-color px-4 py-3 border-r-0 rounded-r-none rounded-sm">
-                @
+            <div className="w-full">
+              <div className="flex">
+                <div className="text-gray-color h-full border border-gray-color px-4 py-3 border-r-0 rounded-r-none rounded-sm">
+                  @
+                </div>
+                <input
+                  className="border active:bg-none border-gray-color rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full"
+                  placeholder="masukkan email anda"
+                  type="email"
+                  {...register("email", {
+                    required: "Wajib diisi",
+                  })}
+                />
               </div>
-              <input
-                className="border active:bg-none border-gray-color rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full"
-                placeholder="masukkan email anda"
-                type="email"
-                {...register("email", {
-                  required: true,
-                })}
-              />
+              {errors?.email && (
+                <p className="text-primary-color text-sm">
+                  {errors?.email?.message}
+                </p>
+              )}
             </div>
-            <div className="flex">
-              <div className="h-full border border-gray-color px-4 py-4 border-r-0 rounded-sm rounded-r-none">
-                <MdLockOutline className="text-gray-color" />
+            <div className="w-full">
+              <div className="flex">
+                <div className="h-full border border-gray-color px-4 py-4 border-r-0 rounded-sm rounded-r-none">
+                  <MdLockOutline className="text-gray-color" />
+                </div>
+                <input
+                  className="border active:bg-none border-gray-color rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full border-r-0 rounded-r-none"
+                  placeholder="masukkan password anda"
+                  type={isCheckPassword ? "text" : "password"}
+                  {...register("password", {
+                    required: "Wajib diisi",
+                  })}
+                />
+                <div
+                  className="text-gray-400 border border-gray-color flex items-center justify-center px-4 border-l-0 rounded-l-none rounded-sm"
+                  onClick={onCheckPassword}
+                >
+                  {isCheckPassword ? (
+                    <AiOutlineEye size={16} className="text-gray-color" />
+                  ) : (
+                    <AiOutlineEyeInvisible
+                      size={16}
+                      className="text-gray-color"
+                    />
+                  )}
+                </div>
               </div>
-              <input
-                className="border active:bg-none border-gray-color rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full border-r-0 rounded-r-none"
-                placeholder="masukkan password anda"
-                type={isCheckPassword ? "text" : "password"}
-                {...register("password", {
-                  required: true,
-                })}
-              />
-              <div
-                className="text-gray-400 border border-gray-color flex items-center justify-center px-4 border-l-0 rounded-l-none rounded-sm"
-                onClick={onCheckPassword}
-              >
-                {isCheckPassword ? (
-                  <AiOutlineEye size={16} className="text-gray-color" />
-                ) : (
-                  <AiOutlineEyeInvisible
-                    size={16}
-                    className="text-gray-color"
-                  />
-                )}
-              </div>
+              {errors?.password && (
+                <p className="text-primary-color text-sm">
+                  {errors?.password?.message}
+                </p>
+              )}
             </div>
           </div>
           <button

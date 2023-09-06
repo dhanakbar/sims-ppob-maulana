@@ -22,8 +22,6 @@ const TopUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log(isSuccessTopup);
-
   useEffect(() => {
     if (!watch("nominal")) {
       setValue("fast_nominal", null);
@@ -44,7 +42,6 @@ const TopUp = () => {
   };
 
   const onSubmitTopup = (data) => {
-    console.log(data);
     dispatch(topupBalance({ top_up_amount: data.nominal }));
     setConfirmTopup(false);
   };

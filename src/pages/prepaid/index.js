@@ -29,8 +29,6 @@ const Prepaid = () => {
     dispatch(payTransactionAction({ service_code }));
   };
 
-  console.log(isFailPayTransaction);
-
   const fetchServices = async () => {
     try {
       const response = await axios.get(

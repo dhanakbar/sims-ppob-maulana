@@ -44,7 +44,6 @@ const Account = () => {
       first_name: data?.first_name || profile?.data?.first_name,
       last_name: data?.last_name || profile?.data?.last_name,
     };
-    console.log(data);
     dispatch(updateProfile(newProfile));
     setIsCantBeEdited(!isCantBeEdited);
   };
@@ -72,7 +71,6 @@ const Account = () => {
 
     if (profilePicture) {
       if (!["image/jpeg", "image/png"].includes(profilePicture?.type)) {
-        console.log(profilePicture?.type);
         setErrorProfilePict("profile_picture", {
           message: "Format file harus JPEG/PNG",
         });
@@ -81,7 +79,6 @@ const Account = () => {
           message: "Foto harus kurang dari 100kb",
         });
       } else {
-        console.log(profilePicture?.type);
         clearErrorProfilePict("profile_picture");
         formData.append("asd", profilePicture);
         dispatch(updateProfilePicture({ newProfile: formData }));
@@ -89,8 +86,6 @@ const Account = () => {
     } else {
       return;
     }
-
-    console.log(formData);
   };
 
   useEffect(() => {

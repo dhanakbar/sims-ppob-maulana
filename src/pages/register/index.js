@@ -78,70 +78,98 @@ const Register = () => {
             Lengkapi data <br /> untuk membuat akun
           </h1>
           <div className="w-full flex flex-col gap-8">
-            <div className="flex">
-              <div className="text-gray-color h-full border border-gray-color px-4 py-3 border-r-0 rounded-r-none rounded-sm">
-                @
+            <div className="w-full">
+              <div className="flex">
+                <div className="text-gray-color h-full border border-gray-color px-4 py-3 border-r-0 rounded-r-none rounded-sm">
+                  @
+                </div>
+                <input
+                  className="border active:bg-none border-gray-color rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full"
+                  placeholder="masukkan email anda"
+                  type="email"
+                  {...register("email", {
+                    required: "Wajib diisi",
+                  })}
+                />
               </div>
-              <input
-                className="border active:bg-none border-gray-color rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full"
-                placeholder="masukkan email anda"
-                type="email"
-                {...register("email", {
-                  required: true,
-                })}
-              />
+              {errors?.email && (
+                <p className="text-primary-color text-sm">
+                  {errors?.email?.message}
+                </p>
+              )}
             </div>
-            <div className="flex">
-              <div className="h-full border border-gray-color px-4 py-4 border-r-0 rounded-sm rounded-r-none">
-                <BsFillPersonFill className="text-gray-color" />
+            <div className="w-full">
+              <div className="flex">
+                <div className="h-full border border-gray-color px-4 py-4 border-r-0 rounded-sm rounded-r-none">
+                  <BsFillPersonFill className="text-gray-color" />
+                </div>
+                <input
+                  className="border active:bg-none border-gray-color rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full"
+                  placeholder="masukkan nama depan"
+                  type="text"
+                  {...register("first_name", {
+                    required: "Wajib diisi",
+                  })}
+                />
               </div>
-              <input
-                className="border active:bg-none border-gray-color rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full"
-                placeholder="masukkan nama depan"
-                type="text"
-                {...register("first_name", {
-                  required: true,
-                })}
-              />
+              {errors?.first_name && (
+                <p className="text-primary-color text-sm">
+                  {errors?.first_name?.message}
+                </p>
+              )}
             </div>
-            <div className="flex">
-              <div className="h-full border border-gray-color px-4 py-4 border-r-0 rounded-sm rounded-r-none">
-                <BsFillPersonFill className="text-gray-color" />
+            <div className="w-full">
+              <div className="flex">
+                <div className="h-full border border-gray-color px-4 py-4 border-r-0 rounded-sm rounded-r-none">
+                  <BsFillPersonFill className="text-gray-color" />
+                </div>
+                <input
+                  className="border active:bg-none border-gray-color rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full"
+                  placeholder="masukkan nama belakang"
+                  type="text"
+                  {...register("last_name", {
+                    required: "Wajib diisi",
+                  })}
+                />
               </div>
-              <input
-                className="border active:bg-none border-gray-color rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full"
-                placeholder="masukkan nama belakang"
-                type="text"
-                {...register("last_name", {
-                  required: true,
-                })}
-              />
+              {errors?.last_name && (
+                <p className="text-primary-color text-sm">
+                  {errors?.last_name?.message}
+                </p>
+              )}
             </div>
-            <div className="flex">
-              <div className="h-full border border-gray-color px-4 py-4 border-r-0 rounded-sm rounded-r-none">
-                <MdLockOutline className="text-gray-color" />
+            <div className="w-full">
+              <div className="flex">
+                <div className="h-full border border-gray-color px-4 py-4 border-r-0 rounded-sm rounded-r-none">
+                  <MdLockOutline className="text-gray-color" />
+                </div>
+                <input
+                  className="border active:bg-none border-gray-color rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full border-r-0 rounded-r-none"
+                  placeholder="buat password"
+                  type={isCheckPassword ? "text" : "password"}
+                  {...register("password", {
+                    required: "Wajib diisi",
+                  })}
+                />
+                <div
+                  className="text-gray-400 border border-gray-color flex items-center justify-center px-4 border-l-0 rounded-l-none rounded-sm"
+                  onClick={onCheckPassword}
+                >
+                  {isCheckPassword ? (
+                    <AiOutlineEye size={16} className="text-gray-color" />
+                  ) : (
+                    <AiOutlineEyeInvisible
+                      size={16}
+                      className="text-gray-color"
+                    />
+                  )}
+                </div>
               </div>
-              <input
-                className="border active:bg-none border-gray-color rounded-l-none rounded-sm border-l-0 placeholder:text-gray-color w-full border-r-0 rounded-r-none"
-                placeholder="buat password"
-                type={isCheckPassword ? "text" : "password"}
-                {...register("password", {
-                  required: true,
-                })}
-              />
-              <div
-                className="text-gray-400 border border-gray-color flex items-center justify-center px-4 border-l-0 rounded-l-none rounded-sm"
-                onClick={onCheckPassword}
-              >
-                {isCheckPassword ? (
-                  <AiOutlineEye size={16} className="text-gray-color" />
-                ) : (
-                  <AiOutlineEyeInvisible
-                    size={16}
-                    className="text-gray-color"
-                  />
-                )}
-              </div>
+              {errors?.password && (
+                <p className="text-primary-color text-sm">
+                  {errors?.password?.message}
+                </p>
+              )}
             </div>
             <div className="w-full">
               <div className="flex">
@@ -153,7 +181,7 @@ const Register = () => {
                   placeholder="konfirmasi password"
                   type={isCheckConfirmPassword ? "text" : "password"}
                   {...register("confirm_password", {
-                    required: true,
+                    required: "Wajib diisi",
                     validate: (val) => {
                       if (watch("password") !== val) {
                         return "Password tidak sama";
@@ -176,11 +204,10 @@ const Register = () => {
                 </div>
               </div>
               {errors?.confirm_password && (
-                <p className="text-primary-color">
+                <p className="text-primary-color text-sm">
                   {errors?.confirm_password?.message}
                 </p>
               )}
-              {console.log(errors?.confirm_password?.message)}
             </div>
           </div>
           <button
@@ -195,7 +222,6 @@ const Register = () => {
               <Link to={"/login"}>di sini</Link>
             </span>
           </p>
-          {console.log(registerUser)}
           {isFailRegister && (
             <Alert
               message={registerUser?.data?.message}
