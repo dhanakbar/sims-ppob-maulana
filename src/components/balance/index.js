@@ -25,7 +25,7 @@ const Balance = () => {
     <section className="w-full flex flex-col md:flex-row py-8 gap-4">
       <div className="flex flex-col justify-between w-3/4">
         <img
-          className="rounded-full border"
+          className="rounded-full border !w-20 !h-20"
           src={
             !onErrorProfilePicture
               ? profile?.data?.profile_image
