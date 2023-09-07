@@ -162,18 +162,18 @@ const TopUp = () => {
               <div
                 disabled={
                   !nominalValue ||
-                  (parseInt(nominalValue) < 9999 &&
+                  (parseInt(nominalValue) < 10000 &&
                     parseInt(nominalValue) > 1000000)
                 }
                 className={`w-full py-3 ${
-                  parseInt(nominalValue) > 9999 &&
-                  parseInt(nominalValue) < 1000000
+                  parseInt(nominalValue) >= 10000 &&
+                  parseInt(nominalValue) <= 1000000
                     ? "bg-primary-color"
                     : "bg-gray-color"
                 } text-white-color rounded-sm text-center`}
                 onClick={() =>
-                  parseInt(nominalValue) > 9999 &&
-                  parseInt(nominalValue) < 1000000 &&
+                  parseInt(nominalValue) >= 10000 &&
+                  parseInt(nominalValue) <= 1000000 &&
                   setConfirmTopup(true)
                 }
               >
